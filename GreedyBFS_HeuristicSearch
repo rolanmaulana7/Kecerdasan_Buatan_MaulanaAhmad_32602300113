@@ -1,0 +1,26 @@
+import heapq
+
+def greedy_bfs(graph, heuristic, start, goal):
+    priority_queue = []
+    heapq.heappush(priority_queue, (heuristic[start], [start]))
+    visited = set()
+
+    while priority_queue:
+        h, path = heapq.heappop(priority_queue)
+        node = path[-1]
+
+        if node == goal:
+            return path
+
+        if node not in visited:
+            visited.add(node)
+            for neighbor in graph[node]:
+                new_path = list(path)
+                new_path.append(neighbor)
+                heapq.heappush(priority_queue, (heuristic[neighbor], new_path))
+
+    return None
+
+
+path = greedy_bfs(graph, heuristic, 'A', 'G')
+print("Greedy BFS Path:", path)
