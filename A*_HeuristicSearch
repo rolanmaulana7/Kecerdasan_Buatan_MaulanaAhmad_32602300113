@@ -1,0 +1,26 @@
+import heapq
+
+def astar(graph, start, goal, heuristic):
+    open_list = []
+    heapq.heappush(open_list, (0, [start]))
+    visited = set()
+
+    while open_list:
+        cost, path = heapq.heappop(open_list)
+        node = path[-1]
+
+        if node == goal:
+            return path, cost
+
+        if node not in visited:
+            visited.add(node)
+            for neighbor in graph[node]:
+                g = cost + graph[node][neighbor]
+                h = heuristic[neighbor]
+                f = g + h
+                heapq.heappush(open_list, (g, path + [neighbor]))
+
+    return None
+
+path, cost = astar(graph, 'A', 'G', heuristic)
+print("A* Path:", path, "Cost:", cost)
